@@ -21,6 +21,7 @@ app_defaults = {
     'YDL_ARCHIVE_FILE': None,
     'YDL_SERVER_HOST': '0.0.0.0',
     'YDL_SERVER_PORT': 8080,
+    'YDL_PROXY': None,
 }
 
 
@@ -93,12 +94,17 @@ def get_ydl_options(request_options):
             'preferedformat': ydl_vars['YDL_RECODE_VIDEO_FORMAT'],
         })
 
-    return {
+    ydl_options = {
         'format': ydl_vars['YDL_FORMAT'],
         'postprocessors': postprocessors,
         'outtmpl': ydl_vars['YDL_OUTPUT_TEMPLATE'],
         'download_archive': ydl_vars['YDL_ARCHIVE_FILE']
     }
+
+    if ydl_vars['YDL_PROXY']:
+        ydl_options['proxy'] = ydl_vars['YDL_PROXY']
+
+    return ydl_options
 
 
 def download(url, request_options):
